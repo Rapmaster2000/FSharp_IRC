@@ -47,7 +47,7 @@ type MenuBar =
                                  | :? InvalidOperationException as ex -> MessageBox.Show("Fehler beim Verbinden" + Environment.NewLine, "Fehler") |> ignore; dialog.Dispose ();
             | _ -> dialog.Dispose ()
         elif sender :?> ToolStripMenuItem = this.subMenuBeenden then
-            Environment.Exit 1 |> ignore
+            Environment.Exit 0
             //Application.Exit () |> ignore
         //else MessageBox.Show("Unbekannter button") |> ignore
 
