@@ -52,12 +52,7 @@ type ConnectionDialog =
         this.Text <- "Server eingeben"
         this.TopMost <- true
         //this.FormBorderStyle <- FormBorderStyle.FixedSingle
-        //this.tableLayoutPanel.Height <- 100
-        //this.tableLayoutPanel.Width <- 300
-        this.tableLayoutPanel.Dock <- DockStyle.Fill
-        this.tableLayoutPanel.AutoSize <- true
-        let panel = new Panel () in
-        let panel2 = new Panel () in
+        let panel = new Panel (AutoSize = true) in
         this.addressField.Location <- new Point(10, 20)
         groupBox.Controls.Add  this.addressField
 
@@ -65,11 +60,6 @@ type ConnectionDialog =
         groupBox2.Controls.Add this.portField
 
         //panel.BorderStyle <- System.Windows.Forms.BorderStyle.FixedSingle
-       // panel.Controls.Add groupBox
-        //panel.Text <- "Server-Adresse"
-        panel.AutoSize <- true
-        //panel.Controls.Add groupBox
-        this.okButton.AutoSize <- true
         this.tableLayoutPanel.Controls.Add (groupBox, 0 ,0) 
         this.tableLayoutPanel.Controls.Add (groupBox2, 1 ,0) 
         this.tableLayoutPanel.Controls.Add (this.okButton, 0, 1)
@@ -87,7 +77,7 @@ type ConnectionDialog =
         ConnectionDialog.instance.Show ()
 
     new () as this = 
-       {tableLayoutPanel = new TableLayoutPanel (); okButton = new Button (Text = "Verbinden" ); cancelButton = new Button (Text="Abbrechen"); addressField = new TextBox (); portField = new TextBox ()}
+       {tableLayoutPanel = new TableLayoutPanel (Dock = DockStyle.Fill, AutoSize = true); okButton = new Button (Text = "Verbinden", AutoSize = true ); cancelButton = new Button (Text="Abbrechen"); addressField = new TextBox (); portField = new TextBox ()}
        then
        this.init ()
     end
