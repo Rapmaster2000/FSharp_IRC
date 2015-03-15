@@ -22,6 +22,7 @@ type Tab =
             if box tab <> null then
                 tab.Dispose ()
                 this.tabPages.Remove tab.Name |> ignore
+
                 
     member public this.closeTab name =
         let i = 0 in

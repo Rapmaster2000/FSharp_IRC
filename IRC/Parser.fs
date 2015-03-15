@@ -26,8 +26,7 @@ type IRCReply =
 
 let stripNewLine (text:string) = 
     if text.Contains(Environment.NewLine)  then
-        let i = text.IndexOf(Environment.NewLine) in
-        text.Remove(i)
+        text.IndexOf(Environment.NewLine) |> text.Remove
      else text       
 
 let (|JOIN|PART|QUIT|LIST|INVALID|) (text:string) =  
