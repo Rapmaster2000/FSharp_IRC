@@ -17,7 +17,7 @@ type ConnectionDialog =
     val mutable private addressField:TextBox
     val mutable private portField:TextBox
     [<DefaultValue>]
-    val mutable private serverAdress:String
+    val mutable private serverAddress:String
     [<DefaultValue>]
     val mutable private port:int
     [<DefaultValue>]
@@ -31,9 +31,9 @@ type ConnectionDialog =
         try
             let s = sender :?> Button in
             if s = this.okButton then
-             this.serverAdress <- this.addressField.Text
+             this.serverAddress <- this.addressField.Text
              this.port <- Int32.Parse(this.portField.Text)
-             let con = new IRCOp ("slash_Fsharp", this.serverAdress, this.port) in 
+             let con = new IRCOp ("slash_Fsharp", this.serverAddress, this.port) in 
              this.connection <- con
              this.DialogResult <- DialogResult.OK
             else if s = this.cancelButton then
