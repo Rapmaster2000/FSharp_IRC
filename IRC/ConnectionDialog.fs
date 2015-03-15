@@ -43,7 +43,7 @@ type ConnectionDialog =
         | :? Exception as ex ->  MessageBox.Show("Fehler: " + ex.Message, "Fehler") |> ignore;
 
     member private this.init () = 
-        let groupBox = new GroupBox (Text = "Server-Adresse", AutoSize = true) in
+        let groupBox  = new GroupBox (Text = "Server-Adresse", AutoSize = true) in
         let groupBox2 = new GroupBox(Text = "Port", AutoSize = true) in
         //this.Height <- 100
         //this.Width <- 300

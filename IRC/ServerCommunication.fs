@@ -43,7 +43,7 @@ type IRCOp =
         match ipA with 
         | null | [||] -> printfn "No IPs found"
         | a -> for i in ipA do
-                   printfn "Found address: %s" (i.ToString ());
+                   i.ToString() |> printfn "Found address: %s" 
                this.tcpCon.Connect (a, this.port)
     
     member public this.setOutput a b =
