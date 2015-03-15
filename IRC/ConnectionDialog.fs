@@ -31,13 +31,13 @@ type ConnectionDialog =
         try
             let s = sender :?> Button in
             if s = this.okButton then
-             this.serverAddress <- this.addressField.Text
-             this.port <- Int32.Parse(this.portField.Text)
-             let con = new IRCOp ("slash_Fsharp", this.serverAddress, this.port) in 
-             this.connection <- con
-             this.DialogResult <- DialogResult.OK
+                this.serverAddress <- this.addressField.Text
+                this.port <- Int32.Parse(this.portField.Text)
+                let con = new IRCOp ("slash_Fsharp", this.serverAddress, this.port) in 
+                this.connection <- con
+                this.DialogResult <- DialogResult.OK
             else if s = this.cancelButton then
-             this.DialogResult <- DialogResult.Cancel
+                this.DialogResult <- DialogResult.Cancel
         with 
         | :? FormatException as ex -> MessageBox.Show("Falsches Format!" + Environment.NewLine + "Füllen Sie die Felder korrekt aus!", "Fehler") |> ignore;
         | :? Exception as ex ->  MessageBox.Show("Fehler: " + ex.Message, "Fehler") |> ignore;

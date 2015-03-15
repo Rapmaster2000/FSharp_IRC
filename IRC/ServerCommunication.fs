@@ -37,7 +37,7 @@ type IRCOp =
     [<DefaultValue>]
     val mutable private textBoxWindow:UpdateTextBox
 
-    new(nick: string, server: string, port: int) = {nick = nick; server = server; port = port; tcpCon = new TcpClient() ; channelList = new List<string>() } 
+    new(nick, server, port) = {nick = nick; server = server; port = port; tcpCon = new TcpClient() ; channelList = new List<string>() } 
     member this.connect () = 
         let ipA = Dns.GetHostAddresses this.server in
         match ipA with 
