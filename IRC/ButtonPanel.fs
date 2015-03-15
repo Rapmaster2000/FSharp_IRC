@@ -19,11 +19,6 @@ type ButtonPanel =
         this.ColumnCount <- 1
         this.RowCount <- 2
 
-        this.connectButton.Text <- "Verbinden"
-        this.exitButton.Text <- "Beenden"
-
-        this.connectButton.Name <- "Verbinden"
-        this.exitButton.Name <- "Beenden"
         (*
         this.exitButton.Click.AddHandler (fun obj x -> printfn "Exit Handler"; Aplication.Exit ())
         this.connectButton.Click.AddHandler (fun obj x -> printfn "Connecting... "; 
@@ -48,12 +43,12 @@ type ButtonPanel =
         this.init ()
 
     new (width, height) as this =
-        {exitButton = new Button(); connectButton = new Button ()}
+        {exitButton = new Button(Text = "Beenden"); connectButton = new Button (Text = "Verbinden")}
         then 
         this.init (width, height)
 
     new () as this =
-        {exitButton = new Button(); connectButton = new Button ()}
+        {exitButton = new Button(Text = "Beenden"); connectButton = new Button (Text = "Verbinden")}
         then 
         this.init ()
      end

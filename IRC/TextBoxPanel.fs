@@ -76,24 +76,14 @@ type TextBoxPanel =
         this.ColumnCount <- 2
         this.RowCount <- 2
 
-        this.textBox.Multiline <- true
-        this.nickList.Multiline  <- true
-        this.inputBox.Multiline <- true
-
-        this.textBox.AutoSize <- true
-        this.nickList.AutoSize <- true
-        this.inputBox.AutoSize <- true
-
         this.textBox.Height <- this.Height - offset
         this.textBox.Width <- this.Width - offset
         this.textBox.ScrollBars <- ScrollBars.Vertical
-        this.textBox.ReadOnly <- true
         this.textBox.BackColor <- Color.White
 
         this.nickList.Height <- this.Height - offset
         this.nickList.Width <- offset
         this.nickList.ScrollBars <- ScrollBars.Vertical
-        this.nickList.ReadOnly <- true
         this.nickList.BackColor <- Color.White
 
         this.inputBox.Width <- this.Width - offset
@@ -119,11 +109,11 @@ type TextBoxPanel =
     member public this.updateInputBox text = null
 
     new (xSize, ySize) as this = 
-        {textBox = new TextBox (); nickList = new TextBox (); inputBox = new TextBox (); }
+        {textBox = new TextBox (AutoSize = true, Multiline = true, ReadOnly = true); nickList = new TextBox (AutoSize = true, Multiline = true, ReadOnly = true); inputBox = new TextBox (AutoSize = true, Multiline = true); }
         then 
         this.init xSize ySize
     new () as this =
-        {textBox = new TextBox (); nickList = new TextBox (); inputBox = new TextBox (); }
+        {textBox = new TextBox (AutoSize = true, Multiline = true, ReadOnly = true); nickList = new TextBox (AutoSize = true, Multiline = true, ReadOnly = true); inputBox = new TextBox (AutoSize = true, Multiline = true); }
         then 
         this.init windowWidth (windowHeight - 100)
     end

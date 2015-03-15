@@ -57,12 +57,6 @@ type MenuBar =
         this.AutoSize <- true
         this.Name <- ""
         this.Text <- ""
-        this.menu.Name <- "Server"
-        this.menu.Text <- "Programm"
-        this.subMenuConnect.Name <- "Verbinden"
-        this.subMenuConnect.Text <- "Verbinden"
-        this.subMenuBeenden.Name <- "Beenden"
-        this.subMenuBeenden.Text <- "Beenden"
         this.Items.Add this.menu |> ignore
         this.subMenuBeenden.Click.AddHandler (new EventHandler(this.menuItemClicked))
         this.subMenuConnect.Click.AddHandler (new EventHandler(this.menuItemClicked))
@@ -70,12 +64,12 @@ type MenuBar =
         this.menu.DropDownItems.Add this.subMenuBeenden  |> ignore
 
     new () as this = 
-        { menu = new ToolStripMenuItem(); subMenuConnect = new ToolStripMenuItem(); subMenuBeenden = new ToolStripMenuItem ();}
+        { menu = new ToolStripMenuItem(Name = "Server", Text= "Programm"); subMenuConnect = new ToolStripMenuItem(Name = "Verbinden", Text = "Verbinden"); subMenuBeenden = new ToolStripMenuItem (Text="Beenden", Name="Beenden");}
         then
          this.init ()
 
     new updateFunc as this = 
-        { menu = new ToolStripMenuItem(); subMenuConnect = new ToolStripMenuItem(); subMenuBeenden = new ToolStripMenuItem ();}
+        { menu = new ToolStripMenuItem(Name = "Server", Text= "Programm"); subMenuConnect = new ToolStripMenuItem(Name = "Verbinden", Text = "Verbinden"); subMenuBeenden = new ToolStripMenuItem (Text="Beenden", Name="Beenden");}
         then
          this.updateConnection <- updateFunc
          this.init ()
