@@ -26,7 +26,9 @@ type GUIManager  =
     [<DefaultValue>]
     val mutable private textBoxPanelMap:Map<string,TextBoxPanel>
     [<DefaultValue>]
-    val mutable private tabList: List<TabPage>
+    val mutable private menuBar:MenuBar
+    [<DefaultValue>]
+    val mutable private tabList:List<TabPage>
     [<DefaultValue>]
     static val mutable private instance:GUIManager
     [<DefaultValue>]
@@ -73,8 +75,8 @@ type GUIManager  =
         this.tabControl.Height <- TextBoxPanel.windowWidth
         this.tabControl.AutoSize <- true
         //this.exitButton.Click.AddHandler
-        let bar = new MenuBar (this.updateConnection) in
-        this.form.Controls.Add bar
+        this.menuBar <- new MenuBar(this.updateConnection)
+        this.form.Controls.Add this.menuBar
         this.mainPanel.Controls.Add this.tabControl
         this.tabControl.addTab "Hallo"
         this.tabControl.Location <- new Point(0, 30)
@@ -86,10 +88,13 @@ type GUIManager  =
         then
         this.init ()
             
+
+    member this.getMenuBar = this.menuBar
     member this.updateNickBox nameList = this.textBoxPanel.updateNickBox nameList
     member this.updateTextBox text = this.textBoxPanel.updateTextBox text
     member this.updateInputBox text = this.textBoxPanel.updateInputBox text
 
+    member this.addTab title = this.tabControl.addTab title
 
     member this.run () = 
         Application.Run(this.form)

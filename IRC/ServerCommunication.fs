@@ -52,6 +52,7 @@ type IRCOp =
         
     member public this.getAdress =
         this.server
+
     member public this.getPort =
         this.port
 
@@ -126,7 +127,7 @@ type IRCOp =
         stream.Write (buf, 0, buf.Length)
 
     member this.disconnect =
-        let buf = this.genQuit "123" in 
+        let buf = this.genQuit "Goodbye" in 
         let stream = this.tcpCon.GetStream () in
         stream.Write (buf, 0, buf.Length)
         Thread.Sleep 3000
