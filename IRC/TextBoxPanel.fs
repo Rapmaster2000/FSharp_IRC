@@ -66,7 +66,7 @@ type TextBoxPanel =
                      else this.textBox.AppendText text
                     end
 
-    member public this.init width height=
+    member this.init width height=
         let offset = 100 in 
         this.Height <- height
         this.Width <- width 
@@ -104,19 +104,19 @@ type TextBoxPanel =
         this.Controls.Add (this.inputBox, 0, 1)
         //this.Controls.Add (this.buttonPanel, 1, 1)
 
-    member public this.updateNickBox (nicks: string[]) = 
+    member this.updateNickBox (nicks: string[]) = 
        for s in nicks do
         this.nickList.Text <- this.nickList.Text + s + Environment.NewLine
 
 
-    member public this.emptyNickBox = 
+    member this.emptyNickBox = 
         this.nickList.Clear 
 
         
-    member public this.initTabControl f = this.tabControl <- f
-    member public this.initAddTab f = this.addTab <- f
-    member public this.updateTextBox text = null
-    member public this.updateInputBox text = null
+    member this.initTabControl f = this.tabControl <- f
+    member this.initAddTab f = this.addTab <- f
+    member this.updateTextBox text = null
+    member this.updateInputBox text = null
 
     new (xSize, ySize) as this = 
         {textBox = new TextBox (); nickList = new TextBox (); inputBox = new TextBox (); }

@@ -3,10 +3,10 @@
 
 type IRCMessage = 
     class 
-    val public command:string 
-    val public message:string
+    val command:string 
+    val message:string
 
-    new (cmd:string, msg:string) = 
+    new (cmd, msg) = 
         { 
             command = cmd; 
             message = msg;

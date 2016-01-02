@@ -38,17 +38,25 @@ type IRCOp =
     val mutable tcpCon: TcpClient
     val mutable channelList: List<string>
     [<DefaultValue>]
-    val mutable public outputWindowNick:TextBox
+    val mutable outputWindowNick:TextBox
     [<DefaultValue>]
-    val mutable public outputWindow:TextBox 
+    val mutable outputWindow:TextBox 
     [<DefaultValue>]
-    val mutable public thread:Thread
+    val mutable thread:Thread
     [<DefaultValue>]
     val mutable private textBoxWindow:UpdateTextBox
     [<DefaultValue>]
     val mutable private listeners: List<Listener<IRCMessage>>
 
-    new(nick: string, server: string, port: int) = {nick = nick; server = server; port = port; tcpCon = new TcpClient() ; channelList = new List<string>() } 
+    new(nick, server, port) = 
+        {
+        nick = nick;
+        server = server;
+        port = port;
+        tcpCon = new TcpClient();
+        channelList = new List<string>();
+        } 
+
     member this.connect () = 
         let ipA = Dns.GetHostAddresses this.server in
         match ipA with 
@@ -57,15 +65,15 @@ type IRCOp =
                    printfn "Found address: %s" (i.ToString ());
                this.tcpCon.Connect (a, this.port)
     
-    member public this.setOutput a b =
+    member this.setOutput a b =
         this.outputWindow <- a
         this.outputWindowNick <- b
         
-    member public this.getAdress =
+    member this.getAdress =
         this.server
-    member public this.getPort =
-        this.port
 
+    member this.getPort =
+        this.port
 
     member this.getMotD () = 
         let stream = this.tcpCon.GetStream () in
@@ -92,8 +100,9 @@ type IRCOp =
         if this.thread <> null then
             try
             this.thread.Abort ()
+            this.thread <- null
             with
-            | :? Exception as ex -> MessageBox.Show ("Message " + ex.Message) |> ignore
+            | :? ThreadAbortException as ex -> MessageBox.Show ("Message " + ex.Message, "Exception") |> ignore
         
 
     member this.genUser () = 

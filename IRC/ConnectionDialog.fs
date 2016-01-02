@@ -25,7 +25,7 @@ type ConnectionDialog =
     [<DefaultValue>]
     val mutable private connection:IRCOp 
 
-    member public this.getCon = this.connection
+    member this.getCon = this.connection
 
     member this.buttonClick  (sender:obj) (args:EventArgs) = 
         try
@@ -84,7 +84,7 @@ type ConnectionDialog =
         this.tableLayoutPanel.Controls.Add (this.cancelButton, 1, 1)
         this.Controls.Add this.tableLayoutPanel
 
-    static member public show () = 
+    static member show () = 
         if ConnectionDialog.instance = null then
             ConnectionDialog.instance <- new ConnectionDialog ()
         //ConnectionDialog.instance.Visible <- true

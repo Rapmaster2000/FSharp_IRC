@@ -70,7 +70,7 @@ type GUIManager  =
             
 
  
-    member this.init () = 
+    member private this.init () = 
         this.form <- new Form (Text="F# IRC", Visible= false, TopMost = true)
         this.form.Width <- TextBoxPanel.windowWidth
         this.form.Height <- TextBoxPanel.windowHeight
@@ -96,7 +96,6 @@ type GUIManager  =
         then
         this.init ()
             
-
     member this.update (message:IRCMessage) = 
         Console.WriteLine ("Message " + message.ToString ())
 

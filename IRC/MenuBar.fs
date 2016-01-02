@@ -17,8 +17,8 @@ type MenuBar =
     class
     inherit MenuStrip
 
-    val mutable public menu:ToolStripMenuItem
-    val mutable public aboutMenu:ToolStripMenuItem
+    val mutable menu:ToolStripMenuItem
+    val mutable aboutMenu:ToolStripMenuItem
     val mutable private subMenuConnect:ToolStripMenuItem
     val mutable private subMenuDisconnect:ToolStripMenuItem
     val mutable private subMenuBeenden:ToolStripMenuItem 
