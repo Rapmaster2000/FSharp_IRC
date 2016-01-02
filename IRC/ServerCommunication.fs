@@ -9,6 +9,9 @@ open System.Net.Sockets
 open System.Collections.Generic
 open System.Windows.Forms
 open UpdateInterface
+open ObserverListener.Observer
+open ObserverListener.Listener
+open IRCMessage
 
 let bufSize = 2048
 
@@ -23,6 +26,12 @@ type Delegate1 =  delegate of unit -> unit
 [<AllowNullLiteral>]
 type IRCOp = 
     class
+    interface Observer with 
+        member this.registerListener l = this.listeners.Add(l)
+        member this.removeListener l = 
+            if this.listeners.Contains(l) then 
+                this.listeners.Remove(l) |> ignore
+
     val mutable nick: string
     val mutable server: string
     val mutable port: int
@@ -36,6 +45,8 @@ type IRCOp =
     val mutable public thread:Thread
     [<DefaultValue>]
     val mutable private textBoxWindow:UpdateTextBox
+    [<DefaultValue>]
+    val mutable private listeners: List<Listener<IRCMessage>>
 
     new(nick: string, server: string, port: int) = {nick = nick; server = server; port = port; tcpCon = new TcpClient() ; channelList = new List<string>() } 
     member this.connect () = 
@@ -58,15 +69,16 @@ type IRCOp =
 
     member this.getMotD () = 
         let stream = this.tcpCon.GetStream () in
-        let buf = Array.create bufSize 0uy
+        let buf = Array.create bufSize 0uy in 
         let readBytes = ref 1 in 
         //stream.ReadTimeout <- 2000
         while !readBytes > 0 do
             try
             readBytes := stream.Read (buf, 0, buf.Length)
             if !readBytes > 0 then
+                Console.WriteLine readBytes
                 //this.outputWindow.AppendText (convertToString buf.[..readBytes - 1])
-                this.textBoxWindow.updateTextBox (convertToString buf.[.. !readBytes - 1])
+//                this.textBoxWindow.updateTextBox (convertToString buf.[.. !readBytes - 1])
                 //this.outputWindow.Invoke(new Delegate1(fun () -> this.outputWindow.AppendText (convertToString buf.[.. !readBytes - 1])  )) |> ignore
             with 
             | :? Exception as ex -> MessageBox.Show ("Message " + ex.Message) |> ignore

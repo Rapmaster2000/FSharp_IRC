@@ -50,6 +50,8 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IRCMessage.fs" />
+    <Compile Include="ObserverListener.fs" />
     <Compile Include="UpdateInterface.fs" />
     <Compile Include="Parser.fs" />
     <Compile Include="ServerCommunication.fs" />
