@@ -146,12 +146,13 @@ type IRCOp =
         let stream = this.tcpCon.GetStream () in
         stream.Write (buf, 0, buf.Length)
 
-    member this.disconnect =
+    member this.disconnect () =
         let buf = this.genQuit "123" in 
-        let stream = this.tcpCon.GetStream () in
-        stream.Write (buf, 0, buf.Length)
-        Thread.Sleep 3000
-        this.tcpCon.Close
+        if this.tcpCon.Connected then 
+            let stream = this.tcpCon.GetStream () in
+            stream.Write (buf, 0, buf.Length)
+            Thread.Sleep 3000
+            this.tcpCon.Close ()
 
     override this.ToString () = 
         sprintf "Nick: %s\nServer: %s\nPort: %i\n"  this.nick this.server this.port

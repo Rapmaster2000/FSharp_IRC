@@ -39,28 +39,30 @@ type ConnectionDialog =
             else if s = this.cancelButton then
              this.DialogResult <- DialogResult.Cancel
         with 
-        | :? FormatException as ex -> MessageBox.Show("Falsches Format!" + Environment.NewLine + "Füllen Sie die Felder korrekt aus!", "Fehler") |> ignore;
-        | :? Exception as ex ->  MessageBox.Show("Fehler: " + ex.Message, "Fehler") |> ignore;
+        | :? FormatException | :? ArgumentNullException as ex -> MessageBox.Show("Falsches Format!" + Environment.NewLine + "Füllen Sie die Felder korrekt aus!", "Fehler") |> ignore;
+        | :? OverflowException as ex ->  MessageBox.Show("Fehler: " + ex.Message, "Fehler") |> ignore;
 
     member private this.init () = 
-        this.Height <- 100
-        this.Width <- 300
+//        this.Height <- 130
+//        this.Width <- 250 
         this.StartPosition <- FormStartPosition.CenterScreen
-        this.Text <- "Server eingeben"
+        this.Text <- "Verbinden"
         this.TopMost <- true
-        //this.tableLayoutPanel.Height <- 100
-        //this.tableLayoutPanel.Width <- 300
+        this.FormBorderStyle <- FormBorderStyle.FixedSingle
         this.tableLayoutPanel.AutoSize <- true
         let panel = new Panel () in
         let panel2 = new Panel () in
 
-        panel.BorderStyle <- System.Windows.Forms.BorderStyle.FixedSingle
+        panel.BorderStyle <- BorderStyle.None
+        this.adressField.Anchor <- (AnchorStyles.Left  + AnchorStyles.Top)
+        this.adressField.BorderStyle <- System.Windows.Forms.BorderStyle.FixedSingle
         panel.Controls.Add this.adressField
         panel.Text <- "Server-Addresse"
         panel.AutoSize <- true
         this.okButton.AutoSize <- true
 
-        panel2.BorderStyle <- System.Windows.Forms.BorderStyle.FixedSingle
+        panel2.BorderStyle <- BorderStyle.None
+        this.portField.BorderStyle <- System.Windows.Forms.BorderStyle.FixedSingle
         panel2.Controls.Add this.portField
         panel2.Text <- "Port"
         panel2.AutoSize <- true
@@ -75,23 +77,38 @@ type ConnectionDialog =
         this.okButton.Click.AddHandler eventHandler
 
 
-        this.tableLayoutPanel.RowCount <- 2
+        this.tableLayoutPanel.RowCount <- 3
         this.tableLayoutPanel.ColumnCount <- 2
 
-        this.tableLayoutPanel.Controls.Add (panel, 0 ,0) 
-        this.tableLayoutPanel.Controls.Add (panel2, 1, 0)
-        this.tableLayoutPanel.Controls.Add (this.okButton, 0, 1)
-        this.tableLayoutPanel.Controls.Add (this.cancelButton, 1, 1)
+        let addressLabel = new Label () in 
+        let portLabel = new Label ()
+        addressLabel.Text <- "Server-Adresse:"
+        portLabel.Text <-  "Port:"
+        addressLabel.Anchor <- (AnchorStyles.Left + AnchorStyles.Top)
+        this.tableLayoutPanel.Controls.Add(addressLabel, 0, 0)
+        this.tableLayoutPanel.Controls.Add (panel, 1 ,0) 
+        this.tableLayoutPanel.Controls.Add (portLabel, 0, 1)
+        this.tableLayoutPanel.Controls.Add (panel2, 1, 1)
+        this.tableLayoutPanel.Controls.Add (this.okButton, 0, 2)
+        this.tableLayoutPanel.Controls.Add (this.cancelButton, 1, 2)
         this.Controls.Add this.tableLayoutPanel
 
     static member show () = 
         if ConnectionDialog.instance = null then
             ConnectionDialog.instance <- new ConnectionDialog ()
-        //ConnectionDialog.instance.Visible <- true
         ConnectionDialog.instance.Show ()
 
+    static member destroy () =
+        ConnectionDialog.instance <- null
+
     new () as this = 
-       {tableLayoutPanel = new TableLayoutPanel (); okButton = new Button (); cancelButton = new Button (); adressField = new TextBox (); portField = new TextBox ()}
+       {
+        tableLayoutPanel = new TableLayoutPanel (); 
+        okButton = new Button (); 
+        cancelButton = new Button (); 
+        adressField = new TextBox (); 
+        portField = new TextBox ()
+        }
        then
        this.init ()
     end

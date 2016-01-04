@@ -29,7 +29,7 @@ let main argv =
         printfn "Conncted to %s" (a.ToString ())
         (*ignore(Console.ReadKey ()) *)
         printfn "Disconnecting..."
-        a.disconnect ()
+        a.disconnect () 
         (*ignore(Console.ReadKey ()) *)
     with 
         | :? NullReferenceException as ex -> printfn "Null-Pointer exception: %s" ex.Message;

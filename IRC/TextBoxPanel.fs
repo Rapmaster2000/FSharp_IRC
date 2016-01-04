@@ -6,6 +6,7 @@ open System.Windows
 open System.Windows.Forms
 open System.Net.Sockets
 open System.Drawing
+open System.Windows.Forms
 open System.Collections.Generic
 open ButtonPanel
 open ConnectionDialog
@@ -24,9 +25,6 @@ type TabCloseFunction = unit -> unit
 type TextBoxPanel = 
     class
     inherit TableLayoutPanel 
-    interface UpdateTextBox with 
-        member this.updateTextBox text = this.textBox.AppendText text
-        member this.updateNickBox text = this.nickList.AppendText text
     val mutable private textBox:TextBox
     val mutable private nickList:TextBox
     val mutable private inputBox:TextBox
@@ -76,6 +74,10 @@ type TextBoxPanel =
         this.ColumnCount <- 2
         this.RowCount <- 2
 
+        this.nickList.BorderStyle <- BorderStyle.FixedSingle
+        this.inputBox.BorderStyle <- BorderStyle.FixedSingle
+        this.textBox.BorderStyle <- BorderStyle.FixedSingle
+
         this.textBox.Multiline <- true
         this.nickList.Multiline  <- true
         this.inputBox.Multiline <- true
@@ -108,6 +110,9 @@ type TextBoxPanel =
        for s in nicks do
         this.nickList.Text <- this.nickList.Text + s + Environment.NewLine
 
+    interface UpdateTextBox with 
+        member this.updateTextBox text = this.textBox.AppendText text
+        member this.updateNickBox text = this.nickList.AppendText text
 
     member this.emptyNickBox = 
         this.nickList.Clear 
@@ -119,11 +124,20 @@ type TextBoxPanel =
     member this.updateInputBox text = null
 
     new (xSize, ySize) as this = 
-        {textBox = new TextBox (); nickList = new TextBox (); inputBox = new TextBox (); }
+        {
+            textBox = new TextBox (); 
+            nickList = new TextBox (); 
+            inputBox = new TextBox (); 
+        }
         then 
         this.init xSize ySize
+
     new () as this =
-        {textBox = new TextBox (); nickList = new TextBox (); inputBox = new TextBox (); }
+        {
+         textBox = new TextBox (); 
+         nickList = new TextBox (); 
+         inputBox = new TextBox (); 
+        }
         then 
         this.init windowWidth (windowHeight - 100)
     end

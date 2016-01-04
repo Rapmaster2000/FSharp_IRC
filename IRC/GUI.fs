@@ -69,6 +69,9 @@ type GUIManager  =
             ob.registerListener this
             
 
+    member private this.onCloseEventHandler (ev:FormClosingEventArgs) = ()
+
+
  
     member private this.init () = 
         this.form <- new Form (Text="F# IRC", Visible= false, TopMost = true)
