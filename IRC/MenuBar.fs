@@ -71,7 +71,7 @@ type MenuBar =
         this.subMenuBeenden.Text <- "Beenden"
 
         this.subMenuDisconnect.Name <- "DisconnectButton"
-        this.subMenuDisconnect.Text  <- "Verbindung beenden"
+        this.subMenuDisconnect.Text  <- "Verbindung trennen"
         this.subMenuDisconnect.Enabled <- false
 
         this.Items.Add this.menu |> ignore

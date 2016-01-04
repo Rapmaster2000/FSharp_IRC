@@ -70,8 +70,6 @@ type GUIManager  =
             
 
     member private this.onCloseEventHandler (ev:FormClosingEventArgs) = ()
-
-
  
     member private this.init () = 
         this.form <- new Form (Text="F# IRC", Visible= false, TopMost = true)
@@ -97,7 +95,7 @@ type GUIManager  =
     private new () as this = 
         {}
         then
-        this.init ()
+            this.init ()
             
     member this.update (message:IRCMessage) = 
         Console.WriteLine ("Message " + message.ToString ())

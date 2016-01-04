@@ -108,7 +108,7 @@ type ConnectionDialog =
         cancelButton = new Button (); 
         adressField = new TextBox (); 
         portField = new TextBox ()
-        }
+       }
        then
-       this.init ()
+        this.init ()
     end

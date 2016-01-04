@@ -132,12 +132,7 @@ type TextBoxPanel =
         then 
         this.init xSize ySize
 
-    new () as this =
-        {
-         textBox = new TextBox (); 
-         nickList = new TextBox (); 
-         inputBox = new TextBox (); 
-        }
-        then 
-        this.init windowWidth (windowHeight - 100)
+    new () =
+        new TextBoxPanel (windowWidth, windowHeight - 100)
+
     end

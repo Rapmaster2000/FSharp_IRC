@@ -23,9 +23,9 @@ type OkCancelDialog =
 
     new () as this = 
         {
-         okButton = new Button();
-         cancelButton = new Button();
-         tableLayout = new TableLayoutPanel();
+         okButton = new Button ();
+         cancelButton = new Button ();
+         tableLayout = new TableLayoutPanel ();
         }
         then
             this.AutoSize <- true
@@ -37,7 +37,7 @@ type OkCancelDialog =
             this.cancelButton.Click.AddHandler ev
 
 
-    member private this.buttonClick  (sender:obj) (args:EventArgs) = 
+    member private this.buttonClick (sender:obj) (args:EventArgs) = 
         let button = sender :?> Button in
         if button = this.okButton then
             this.okClicked args

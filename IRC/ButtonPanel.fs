@@ -24,16 +24,6 @@ type ButtonPanel =
 
         this.connectButton.Name <- "Verbinden"
         this.exitButton.Name <- "Beenden"
-        (*
-        this.exitButton.Click.AddHandler (fun obj x -> printfn "Exit Handler"; Aplication.Exit ())
-        this.connectButton.Click.AddHandler (fun obj x -> printfn "Connecting... "; 
-                                                          let d = new ConnectionDialog () in 
-                                                          d.ShowDialog this |> ignore
-                                                          match d.DialogResult with
-                                                          | DialogResult.OK -> let con = d.getCon in 
-                                                                                d.Dispose ()
-
-                                                          | _ -> d.Dispose () ) *)
         this.Controls.Add (this.connectButton, 0, 0)
         this.Controls.Add (this.exitButton, 0, 1)
 
@@ -48,12 +38,18 @@ type ButtonPanel =
         this.init ()
 
     new (width, height) as this =
-        {exitButton = new Button(); connectButton = new Button ()}
+        {
+            exitButton = new Button(); 
+            connectButton = new Button ()
+        }
         then 
-        this.init (width, height)
+         this.init (width, height)
 
     new () as this =
-        {exitButton = new Button(); connectButton = new Button ()}
+        {
+            exitButton = new Button(); 
+            connectButton = new Button ()
+        }
         then 
-        this.init ()
+         this.init ()
      end

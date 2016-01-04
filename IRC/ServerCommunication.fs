@@ -89,7 +89,7 @@ type IRCOp =
 //                this.textBoxWindow.updateTextBox (convertToString buf.[.. !readBytes - 1])
                 //this.outputWindow.Invoke(new Delegate1(fun () -> this.outputWindow.AppendText (convertToString buf.[.. !readBytes - 1])  )) |> ignore
             with 
-            | :? Exception as ex -> MessageBox.Show ("Message " + ex.Message) |> ignore
+            | :? IOException as ex -> MessageBox.Show ("Message " + ex.Message) |> ignore
 
     member this.startRecvThread () =
         let thread = new Thread(this.getMotD) in

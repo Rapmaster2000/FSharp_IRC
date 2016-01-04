@@ -47,5 +47,8 @@ type Tab =
         //this.initTabControl this.tabControl
         //tableLayout.initAddTab this.addPage
 
-    new () = {tabPages = new Dictionary<String, TextBoxPanel>()}
+    new () = 
+        {
+         tabPages = new Dictionary<String, TextBoxPanel>()
+        }
     end
