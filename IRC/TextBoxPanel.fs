@@ -25,9 +25,9 @@ type TabCloseFunction = unit -> unit
 type TextBoxPanel = 
     class
     inherit TableLayoutPanel 
-    val mutable private textBox:TextBox
-    val mutable private nickList:TextBox
-    val mutable private inputBox:TextBox
+    val private textBox:TextBox
+    val private nickList:TextBox
+    val private inputBox:TextBox
     [<DefaultValue>]
     val mutable private tabControl:TabControl
     [<DefaultValue>]

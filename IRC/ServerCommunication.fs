@@ -33,10 +33,10 @@ type IRCOp =
                 this.listeners.Remove(l) |> ignore
 
     val mutable nick: string
-    val mutable server: string
-    val mutable port: int
-    val mutable tcpCon: TcpClient
-    val mutable channelList: List<string>
+    val server: string
+    val port: int
+    val tcpCon: TcpClient
+    val channelList: List<string>
     [<DefaultValue>]
     val mutable outputWindowNick:TextBox
     [<DefaultValue>]

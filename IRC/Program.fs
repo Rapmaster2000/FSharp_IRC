@@ -20,7 +20,7 @@ let main argv =
     try
         let a = new IRCOp("slash_Fsharp", "wilhelm.freenode.net", 6667) in
         let instance = GUIManager.getInstance () in
-        let nickList = [|"Hallo"; "1234"; "foobar";"25gab"|] in
+        let nickList = [|"Hallo"; "1234"; "foobar"; "25gab"|] in
         //instance.addPage "1. Seite"
         //instance.updateNickBox nickList
         instance.run ()

@@ -14,7 +14,7 @@ open TextBoxPanel
 type Tab =
     class 
     inherit TabControl
-    val mutable private tabPages:Dictionary<String, TextBoxPanel>
+    val private tabPages:Dictionary<String, TextBoxPanel>
 
     member this.closeActiveTab =
         let tab = this.SelectedTab in
