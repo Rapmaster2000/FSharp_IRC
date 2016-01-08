@@ -106,13 +106,11 @@ type IRCOp =
         convertToBuf str
 
     member this.connectionSequence () = 
-        //this.connect ()
         let stream = this.tcpCon.GetStream () in
         let buf = this.genNick () in 
         stream.Write (buf, 0, buf.Length)
         let buf2 = this.genUser () in 
         stream.Write (buf2, 0, buf2.Length)
-        (*this.getMotD*)
 
     member this.setNick nick =
         this.nick <- nick
