@@ -11,8 +11,9 @@
     <AssemblyName>IRC</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <TargetFSharpCoreVersion>4.3.1.0</TargetFSharpCoreVersion>
+    <TargetFSharpCoreVersion>4.4.0.0</TargetFSharpCoreVersion>
     <Name>IRC</Name>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -50,9 +51,12 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IRCMessage.fs" />
+    <Compile Include="ObserverListener.fs" />
     <Compile Include="UpdateInterface.fs" />
     <Compile Include="Parser.fs" />
     <Compile Include="ServerCommunication.fs" />
+    <Compile Include="OkCancelDialog.fs" />
     <Compile Include="ConnectionDialog.fs" />
     <Compile Include="ButtonPanel.fs" />
     <Compile Include="TextBoxPanel.fs" />

@@ -6,6 +6,7 @@ open System.Windows
 open System.Windows.Forms
 open System.Net.Sockets
 open System.Drawing
+open System.Windows.Forms
 open System.Collections.Generic
 open ButtonPanel
 open ConnectionDialog
@@ -24,12 +25,9 @@ type TabCloseFunction = unit -> unit
 type TextBoxPanel = 
     class
     inherit TableLayoutPanel 
-    interface UpdateTextBox with 
-        member this.updateTextBox text = this.textBox.AppendText text
-        member this.updateNickBox text = this.nickList.AppendText text
-    val mutable private textBox:TextBox
-    val mutable private nickList:TextBox
-    val mutable private inputBox:TextBox
+    val private textBox:TextBox
+    val private nickList:TextBox
+    val private inputBox:TextBox
     [<DefaultValue>]
     val mutable private tabControl:TabControl
     [<DefaultValue>]
@@ -66,7 +64,7 @@ type TextBoxPanel =
                      else this.textBox.AppendText text
                     end
 
-    member public this.init width height=
+    member this.init width height=
         let offset = 100 in 
         this.Height <- height
         this.Width <- width 
@@ -75,6 +73,18 @@ type TextBoxPanel =
         this.Location <- Point (0, 0)
         this.ColumnCount <- 2
         this.RowCount <- 2
+
+        this.nickList.BorderStyle <- BorderStyle.FixedSingle
+        this.inputBox.BorderStyle <- BorderStyle.FixedSingle
+        this.textBox.BorderStyle <- BorderStyle.FixedSingle
+
+        this.textBox.Multiline <- true
+        this.nickList.Multiline  <- true
+        this.inputBox.Multiline <- true
+
+        this.textBox.AutoSize <- true
+        this.nickList.AutoSize <- true
+        this.inputBox.AutoSize <- true
 
         this.textBox.Height <- this.Height - offset
         this.textBox.Width <- this.Width - offset
@@ -94,26 +104,33 @@ type TextBoxPanel =
         this.Controls.Add (this.inputBox, 0, 1)
         //this.Controls.Add (this.buttonPanel, 1, 1)
 
-    member public this.updateNickBox (nicks: string[]) = 
+    member this.updateNickBox (nicks: string[]) = 
        for s in nicks do
         this.nickList.Text <- this.nickList.Text + s + Environment.NewLine
 
+    interface UpdateTextBox with 
+        member this.updateTextBox text = this.textBox.AppendText text
+        member this.updateNickBox text = this.nickList.AppendText text
 
-    member public this.emptyNickBox = 
+    member this.emptyNickBox = 
         this.nickList.Clear 
 
         
-    member public this.initTabControl f = this.tabControl <- f
-    member public this.initAddTab f = this.addTab <- f
-    member public this.updateTextBox text = null
-    member public this.updateInputBox text = null
+    member this.initTabControl f = this.tabControl <- f
+    member this.initAddTab f = this.addTab <- f
+    member this.updateTextBox text = null
+    member this.updateInputBox text = null
 
     new (xSize, ySize) as this = 
-        {textBox = new TextBox (AutoSize = true, Multiline = true, ReadOnly = true); nickList = new TextBox (AutoSize = true, Multiline = true, ReadOnly = true); inputBox = new TextBox (AutoSize = true, Multiline = true); }
+        {
+            textBox = new TextBox (); 
+            nickList = new TextBox (); 
+            inputBox = new TextBox (); 
+        }
         then 
         this.init xSize ySize
-    new () as this =
-        {textBox = new TextBox (AutoSize = true, Multiline = true, ReadOnly = true); nickList = new TextBox (AutoSize = true, Multiline = true, ReadOnly = true); inputBox = new TextBox (AutoSize = true, Multiline = true); }
-        then 
-        this.init windowWidth (windowHeight - 100)
+
+    new () =
+        new TextBoxPanel (windowWidth, windowHeight - 100)
+
     end

@@ -9,6 +9,9 @@ open System.Net.Sockets
 open System.Collections.Generic
 open System.Windows.Forms
 open UpdateInterface
+open ObserverListener.Observer
+open ObserverListener.Listener
+open IRCMessage
 
 let bufSize = 2048
 
@@ -23,21 +26,37 @@ type Delegate1 =  delegate of unit -> unit
 [<AllowNullLiteral>]
 type IRCOp = 
     class
+    interface Observer with 
+        member this.registerListener l = this.listeners.Add(l)
+        member this.removeListener l = 
+            if this.listeners.Contains(l) then 
+                this.listeners.Remove(l) |> ignore
+
     val mutable nick: string
-    val mutable server: string
-    val mutable port: int
-    val mutable tcpCon: TcpClient
-    val mutable channelList: List<string>
+    val server: string
+    val port: int
+    val tcpCon: TcpClient
+    val channelList: List<string>
     [<DefaultValue>]
-    val mutable public outputWindowNick:TextBox
+    val mutable outputWindowNick:TextBox
     [<DefaultValue>]
-    val mutable public outputWindow:TextBox 
+    val mutable outputWindow:TextBox 
     [<DefaultValue>]
-    val mutable public thread:Thread
+    val mutable thread:Thread
     [<DefaultValue>]
     val mutable private textBoxWindow:UpdateTextBox
+    [<DefaultValue>]
+    val mutable private listeners: List<Listener<IRCMessage>>
 
-    new(nick, server, port) = {nick = nick; server = server; port = port; tcpCon = new TcpClient() ; channelList = new List<string>() } 
+    new(nick, server, port) = 
+        {
+        nick = nick;
+        server = server;
+        port = port;
+        tcpCon = new TcpClient();
+        channelList = new List<string>();
+        } 
+
     member this.connect () = 
         let ipA = Dns.GetHostAddresses this.server in
         match ipA with 
@@ -46,31 +65,31 @@ type IRCOp =
                    i.ToString() |> printfn "Found address: %s" 
                this.tcpCon.Connect (a, this.port)
     
-    member public this.setOutput a b =
+    member this.setOutput a b =
         this.outputWindow <- a
         this.outputWindowNick <- b
         
-    member public this.getAdress =
+    member this.getAdress =
         this.server
 
-    member public this.getPort =
+    member this.getPort =
         this.port
-
 
     member this.getMotD () = 
         let stream = this.tcpCon.GetStream () in
-        let buf = Array.create bufSize 0uy
+        let buf = Array.create bufSize 0uy in 
         let readBytes = ref 1 in 
         //stream.ReadTimeout <- 2000
         while !readBytes > 0 do
             try
             readBytes := stream.Read (buf, 0, buf.Length)
             if !readBytes > 0 then
+                Console.WriteLine readBytes
                 //this.outputWindow.AppendText (convertToString buf.[..readBytes - 1])
-                this.textBoxWindow.updateTextBox (convertToString buf.[.. !readBytes - 1])
+//                this.textBoxWindow.updateTextBox (convertToString buf.[.. !readBytes - 1])
                 //this.outputWindow.Invoke(new Delegate1(fun () -> this.outputWindow.AppendText (convertToString buf.[.. !readBytes - 1])  )) |> ignore
             with 
-            | :? Exception as ex -> MessageBox.Show ("Message " + ex.Message) |> ignore
+            | :? IOException as ex -> MessageBox.Show ("Message " + ex.Message) |> ignore
 
     member this.startRecvThread () =
         let thread = new Thread(this.getMotD) in
@@ -81,8 +100,9 @@ type IRCOp =
         if this.thread <> null then
             try
             this.thread.Abort ()
+            this.thread <- null
             with
-            | :? Exception as ex -> MessageBox.Show ("Message " + ex.Message) |> ignore
+            | :? ThreadAbortException as ex -> MessageBox.Show ("Message " + ex.Message, "Exception") |> ignore
         
 
     member this.genUser () = 
@@ -124,12 +144,13 @@ type IRCOp =
         let stream = this.tcpCon.GetStream () in
         stream.Write (buf, 0, buf.Length)
 
-    member this.disconnect =
-        let buf = this.genQuit "Goodbye" in 
+    member this.disconnect () =
+        let buf = this.genQuit "123" in 
+        if this.tcpCon.Connected then 
         let stream = this.tcpCon.GetStream () in
         stream.Write (buf, 0, buf.Length)
         Thread.Sleep 3000
-        this.tcpCon.Close
+            this.tcpCon.Close ()
 
     override this.ToString () = 
         sprintf "Nick: %s\nServer: %s\nPort: %i\n"  this.nick this.server this.port

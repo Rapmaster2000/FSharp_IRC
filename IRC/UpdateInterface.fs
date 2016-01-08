@@ -8,3 +8,6 @@ open System.IO
 type UpdateTextBox =
     abstract updateNickBox: string -> unit
     abstract updateTextBox: string -> unit
+
+
+
