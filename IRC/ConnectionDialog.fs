@@ -6,41 +6,37 @@ open System.Windows.Forms
 open System.Drawing
 open System.Collections.Generic
 open ServerCommunication
+open OkCancelDialog
 
 [<AllowNullLiteral>]
 type ConnectionDialog = 
     class
-    inherit Form
-    val mutable private tableLayoutPanel:TableLayoutPanel
-    val mutable private okButton:Button 
-    val mutable private cancelButton:Button
-    val mutable private addressField:TextBox
-    val mutable private portField:TextBox
+    val private tableLayoutPanel:TableLayoutPanel
+    val private addressField:TextBox
+    val private portField:TextBox
     [<DefaultValue>]
     val mutable private serverAddress:String
     [<DefaultValue>]
     val mutable private port:int
     [<DefaultValue>]
-    static val mutable private instance:ConnectionDialog
-    [<DefaultValue>]
     val mutable private connection:IRCOp 
 
     member this.getCon = this.connection
 
-    member private this.buttonClick  (sender:obj) (args:EventArgs) = 
-        try
-            let s = sender :?> Button in
-            if s = this.okButton then
-                this.serverAddress <- this.addressField.Text
-             this.port <- Int32.Parse(this.portField.Text)
-                let con = new IRCOp ("slash_Fsharp", this.serverAddress, this.port) in 
-             this.connection <- con
-             this.DialogResult <- DialogResult.OK
-            else if s = this.cancelButton then
-             this.DialogResult <- DialogResult.Cancel
-        with 
-        | :? FormatException | :? ArgumentNullException as ex -> MessageBox.Show("Falsches Format!" + Environment.NewLine + "Füllen Sie die Felder korrekt aus!", "Fehler") |> ignore;
-        | :? OverflowException as ex ->  MessageBox.Show("Fehler: " + ex.Message, "Fehler") |> ignore;
+    member private this.buttonClick  (sender:obj) (args:EventArgs) = ()
+//        try
+//            let s = sender :?> Button in
+//            if s = this.okButton then
+//                this.serverAddress <- this.addressField.Text
+//                this.port <- Int32.Parse(this.portField.Text)
+//                let con = new IRCOp ("slash_Fsharp", this.serverAddress, this.port) in 
+//                this.connection <- con
+//                this.DialogResult <- DialogResult.OK
+//            else if s = this.cancelButton then
+//             this.DialogResult <- DialogResult.Cancel
+//        with 
+//        | :? FormatException | :? ArgumentNullException as ex -> MessageBox.Show("Falsches Format!" + Environment.NewLine + "Füllen Sie die Felder korrekt aus!", "Fehler") |> ignore;
+//        | :? OverflowException as ex ->  MessageBox.Show("Fehler: " + ex.Message, "Fehler") |> ignore;
 
     member private this.init () = 
 //        this.Height <- 130
@@ -54,12 +50,11 @@ type ConnectionDialog =
         let panel2 = new Panel () in
 
         panel.BorderStyle <- BorderStyle.None
-        this.adressField.Anchor <- (AnchorStyles.Left  + AnchorStyles.Top)
-        this.adressField.BorderStyle <- System.Windows.Forms.BorderStyle.FixedSingle
-        panel.Controls.Add this.adressField
-        panel.Text <- "Server-Addresse"
+        this.addressField.Anchor <- (AnchorStyles.Left  + AnchorStyles.Top)
+        this.addressField.BorderStyle <- System.Windows.Forms.BorderStyle.FixedSingle
+        panel.Controls.Add this.addressField
+        panel.Text <- "Server-Adresse"
         panel.AutoSize <- true
-        this.okButton.AutoSize <- true
 
         panel2.BorderStyle <- BorderStyle.None
         this.portField.BorderStyle <- System.Windows.Forms.BorderStyle.FixedSingle
@@ -68,14 +63,6 @@ type ConnectionDialog =
         panel2.AutoSize <- true
 
         //panel.BorderStyle <- System.Windows.Forms.BorderStyle.FixedSingle
-        this.tableLayoutPanel.Controls.Add (groupBox, 0 ,0) 
-        this.tableLayoutPanel.Controls.Add (groupBox2, 1 ,0) 
-        this.tableLayoutPanel.Controls.Add (this.okButton, 0, 1)
-        this.tableLayoutPanel.Controls.Add (this.cancelButton, 1, 1)
-        let eventHandler  = (new EventHandler(this.buttonClick)) in
-        this.cancelButton.Click.AddHandler eventHandler
-        this.okButton.Click.AddHandler eventHandler
-
 
         this.tableLayoutPanel.RowCount <- 3
         this.tableLayoutPanel.ColumnCount <- 2
@@ -89,26 +76,20 @@ type ConnectionDialog =
         this.tableLayoutPanel.Controls.Add (panel, 1 ,0) 
         this.tableLayoutPanel.Controls.Add (portLabel, 0, 1)
         this.tableLayoutPanel.Controls.Add (panel2, 1, 1)
-        this.tableLayoutPanel.Controls.Add (this.okButton, 0, 2)
-        this.tableLayoutPanel.Controls.Add (this.cancelButton, 1, 2)
-        this.Controls.Add this.tableLayoutPanel
+        this.addPanel this.tableLayoutPanel
 
-    static member show () = 
-        if ConnectionDialog.instance = null then
-            ConnectionDialog.instance <- new ConnectionDialog ()
-        ConnectionDialog.instance.Show ()
+    inherit OkCancelDialog 
+    override this.okClicked ev  = () 
+    override this.cancelClicked ev =  this.Dispose ()
+        
 
-    static member destroy () =
-        ConnectionDialog.instance <- null
 
     new () as this = 
        {
         tableLayoutPanel = new TableLayoutPanel (); 
-        okButton = new Button (); 
-        cancelButton = new Button (); 
-        adressField = new TextBox (); 
+        addressField = new TextBox (); 
         portField = new TextBox ()
        }
        then
-       this.init ()
+        this.init ()
     end

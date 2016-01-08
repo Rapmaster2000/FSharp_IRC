@@ -147,9 +147,9 @@ type IRCOp =
     member this.disconnect () =
         let buf = this.genQuit "123" in 
         if this.tcpCon.Connected then 
-        let stream = this.tcpCon.GetStream () in
-        stream.Write (buf, 0, buf.Length)
-        Thread.Sleep 3000
+            let stream = this.tcpCon.GetStream () in
+            stream.Write (buf, 0, buf.Length)
+            Thread.Sleep 3000
             this.tcpCon.Close ()
 
     override this.ToString () = 
